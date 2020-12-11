@@ -2,14 +2,22 @@ import XCTest
 @testable import CSVKit
 
 final class CSVKitTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(CSVKit().text, "Hello, World!")
+    private static let dummyCSVLines: [String] = [
+        "Foo;Bar;Foo2;Bar2",
+        "Line2\";\"Line2-1\";\"Line2-2\";\"Line2-3\""
+    ]
+    
+    func testCSVStringParser() {
+        let parsed = CSVParser.shared.parse(from: CSVKitTests.dummyCSVLines.joined(separator: "\n"))
+        
+        // Check if empty
+        XCTAssertFalse(parsed.isEmpty, "Parsed data is empty")
+        
+        // Check line count
+        XCTAssertTrue(parsed.count == 2, "line count: \(parsed.count)")
     }
 
     static var allTests = [
-        ("testExample", testExample),
+        ("parserTest", testCSVStringParser),
     ]
 }
