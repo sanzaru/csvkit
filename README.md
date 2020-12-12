@@ -1,5 +1,7 @@
 # CSVKit
 
+[![Build Status](https://travis-ci.com/sanzaru/csvkit.svg?branch=main)](https://travis-ci.com/sanzaru/csvkit)
+
 CSVKit is a very simple CSV parsing library for Swift programming.
 The parser reads in an String or Data object and parses the CSV fields into an array of strings. Every root element corresponds to one line of the data.
 
