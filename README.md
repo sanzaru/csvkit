@@ -19,7 +19,7 @@ Add the following to your Package.swift file:
 
 ```
 dependencies: [
-    .package(url: "https://github.com/sanzaru/SimpleToast.git", from: "0.0.1")
+    .package(url: "https://github.com/sanzaru/csvkit.git", from: "0.0.1")
 ]
 ```
 
