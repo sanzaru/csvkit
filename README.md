@@ -29,7 +29,7 @@ dependencies: [
 
 ### Decoding:
 
-### Default decoding
+#### Default decoding
 ```swift
 import Foundation
 import CSVKit
