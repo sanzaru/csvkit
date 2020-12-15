@@ -21,7 +21,7 @@ public enum CSVKitError: Error {
 public struct CSVParser: CSVKitDelegate {
     public static let shared: CSVParser = CSVParser()
     public var separator = CSVKitDefaultSeparator
-    
+
     /**
         Parse CSV data from given string
 
@@ -65,7 +65,7 @@ public struct CSVParser: CSVKitDelegate {
 public struct CSVEncoder: CSVKitDelegate {
     public static let shared: CSVEncoder = CSVEncoder()
     public var separator = CSVKitDefaultSeparator
-    
+
     /**
         Encode CSV data from given array of strings
         - Parameters:
@@ -75,17 +75,25 @@ public struct CSVEncoder: CSVKitDelegate {
         - Returns: Encoded CSV data
      */
     public func encode(from data: [[String]], with encoding: String.Encoding = .utf8) throws -> String {
-        let rows: [String] = data.map { $0.joined(separator: separator) }
-        
+        let rows: [String] = try data.map {
+            try $0.map {
+                // Look for special characters and enclose those strings with quotes,
+                // according to: https://tools.ietf.org/html/rfc4180
+                let regex = try NSRegularExpression(pattern: "\\W")
+                let range = NSRange(location: 0, length: $0.utf8.count)
+                return regex.firstMatch(in: $0, options: [], range: range) != nil ? "\"\($0)\"" : $0
+            }.joined(separator: separator)
+        }
+
         // Validate row data
         try validate(lines: rows)
-        
-        return rows.joined(separator: "\n")
+
+        return rows.joined(separator: "\r\n")
     }
-    
-    
+
+
     // MARK: - Private methods
-    
+
     /**
         Validate the lines of CSV data for integrity
         - Parameters:
@@ -95,7 +103,7 @@ public struct CSVEncoder: CSVKitDelegate {
     private func validate(lines: [String]) throws {
         // Check equal item count
         let count = lines.first?.components(separatedBy: separator).count ?? 0
-        
+
         try lines.forEach { line in
             if line.components(separatedBy: separator).count != count {
                 throw CSVKitError.encodingValidation("Invalid line count. Expected \(count), got \(line.count)")
