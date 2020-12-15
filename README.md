@@ -121,7 +121,7 @@ App.main()
 
 Output:
 ```
-    "Foo;Bar;Foo2;Bar2\nLine2;Line2-1;Line2-2;Line2-3"
+    "Foo;Bar;Foo2;Bar2\r\nLine2;\"Line2-1\";\"Line2-2\";\"Line2-3\""
 ```
 
 
