@@ -127,6 +127,9 @@ Output:
 
 ## Changelog
 
+### Version 0.0.4
+    - Better standard conformance (RFC 4180)
+
 ### Version 0.0.3
     - Added encoding functionality
     - New function parameters and separator handling
