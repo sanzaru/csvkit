@@ -127,6 +127,10 @@ Output:
 
 ## Changelog
 
+### Version 0.0.5
+    - Fixed encoding validation
+    - Extended unit tests
+
 ### Version 0.0.4
     - Better standard conformance (RFC 4180)
 
