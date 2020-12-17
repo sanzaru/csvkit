@@ -105,8 +105,9 @@ public struct CSVEncoder: CSVKitDelegate {
         let count = lines.first?.components(separatedBy: separator).count ?? 0
 
         try lines.forEach { line in
-            if line.components(separatedBy: separator).count != count {
-                throw CSVKitError.encodingValidation("Invalid line count. Expected \(count), got \(line.count)")
+            let currentCount = line.components(separatedBy: separator).count
+            if currentCount != count {
+                throw CSVKitError.encodingValidation("Invalid item count. Expected \(count), got \(currentCount)")
             }
         }
     }
