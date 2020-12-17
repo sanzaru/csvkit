@@ -6,11 +6,17 @@ final class CSVKitTests: XCTestCase {
         ("parserTest", testCSVStringParser),
         ("encoderTest", testCSVEncoder),
         ("roundtrip", testRoundtrip),
+        ("validation", testValidation),
     ]
     
-    private static let dummyCSVLines: [String] = [
+    private static let dummyCSVLines: String = [
         "Foo;Bar;Foo2;Bar2",
         "Line2;Line2-1;Line2-2;Line2-3"
+    ].joined(separator: "\r\n")
+    
+    private static let corruptedCSVData: [[String]] = [
+        ["Foo", "Bar", "Foo2", "Bar2"],
+        ["Line2", "Line2-1", "Line2-3"]
     ]
     
     private static let expectEncodedCSVData: String = "Foo;Bar;Foo2;Bar2\r\nLine2;\"Line2-1\";\"Line2-2\";\"Line2-3\""
@@ -24,7 +30,7 @@ final class CSVKitTests: XCTestCase {
 // MARK: - Parser tests
 extension CSVKitTests {
     func testCSVStringParser() {
-        let parsed = CSVParser.shared.parse(from: CSVKitTests.dummyCSVLines.joined(separator: "\r\n"))
+        let parsed = CSVParser.shared.parse(from: CSVKitTests.dummyCSVLines)
         
         // Check if empty
         XCTAssertFalse(parsed.isEmpty, "Parsed data is empty")
@@ -39,7 +45,7 @@ extension CSVKitTests {
 extension CSVKitTests {
     func testCSVEncoder() {
         do {
-            let input = CSVParser.shared.parse(from: CSVKitTests.dummyCSVLines.joined(separator: "\r\n"))
+            let input = CSVParser.shared.parse(from: CSVKitTests.dummyCSVLines)
             let data = try CSVEncoder.shared.encode(from: input)
             
             XCTAssertFalse(data.isEmpty, "Empty CSV data: \(data)")
@@ -54,7 +60,7 @@ extension CSVKitTests {
 extension CSVKitTests {
     func testRoundtrip() {
         do {
-            let input = CSVParser.shared.parse(from: CSVKitTests.dummyCSVLines.joined(separator: "\r\n"))
+            let input = CSVParser.shared.parse(from: CSVKitTests.dummyCSVLines)
             let data = try CSVEncoder.shared.encode(from: input)
             
             XCTAssertFalse(data.isEmpty, "Empty CSV data: \(data)")
@@ -66,5 +72,13 @@ extension CSVKitTests {
         } catch {
             XCTFail("Error encoding data: \(error)")
         }
+    }
+}
+
+
+// MARK: - Test validation
+extension CSVKitTests {
+    func testValidation() {
+        XCTAssertThrowsError(try CSVEncoder.shared.encode(from: CSVKitTests.corruptedCSVData))        
     }
 }
