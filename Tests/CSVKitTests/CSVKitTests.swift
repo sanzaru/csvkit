@@ -4,7 +4,9 @@ import XCTest
 final class CSVKitTests: XCTestCase {
     static var allTests = [
         ("parserTest", testCSVStringParser),
+        ("parserTestShared", testCSVStringParserShared),
         ("encoderTest", testCSVEncoder),
+        ("encoderTestShared", testCSVEncoderShared),
         ("roundtrip", testRoundtrip),
         ("validation", testValidation),
     ]
@@ -26,10 +28,26 @@ final class CSVKitTests: XCTestCase {
     ]
 }
 
-
-// MARK: - Parser tests
+// MARK: - Parser
 extension CSVKitTests {
     func testCSVStringParser() {
+        var parser = CSVParser()
+        parser.separator = ";"
+        
+        let parsed = parser.parse(from: CSVKitTests.dummyCSVLines)
+        
+        // Check if empty
+        XCTAssertFalse(parsed.isEmpty, "Parsed data is empty")
+        
+        // Check line count
+        XCTAssertTrue(parsed.count == 2, "line count: \(parsed.count)")
+    }
+}
+
+
+// MARK: - Parser shared tests
+extension CSVKitTests {
+    func testCSVStringParserShared() {
         let parsed = CSVParser.shared.parse(from: CSVKitTests.dummyCSVLines)
         
         // Check if empty
@@ -41,12 +59,30 @@ extension CSVKitTests {
 }
 
 
+// MARK: - Encoder shared tests
+extension CSVKitTests {
+    func testCSVEncoderShared() {
+        do {
+            let input = CSVParser.shared.parse(from: CSVKitTests.dummyCSVLines)
+            let data = try CSVEncoder.shared.encode(from: input)
+            
+            XCTAssertFalse(data.isEmpty, "Empty CSV data: \(data)")
+        } catch {
+            XCTFail("Error encoding data: \(error)")
+        }
+    }
+}
+
+
 // MARK: - Encoder tests
 extension CSVKitTests {
     func testCSVEncoder() {
         do {
+            var encoder = CSVEncoder()
+            encoder.separator = ";"
+            
             let input = CSVParser.shared.parse(from: CSVKitTests.dummyCSVLines)
-            let data = try CSVEncoder.shared.encode(from: input)
+            let data = try encoder.encode(from: input)
             
             XCTAssertFalse(data.isEmpty, "Empty CSV data: \(data)")
         } catch {
