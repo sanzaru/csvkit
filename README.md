@@ -127,6 +127,9 @@ Output:
 
 ## Changelog
 
+### Version 1.0:
+    - First release version
+
 ### Version 0.0.5
     - Fixed encoding validation
     - Extended unit tests
