@@ -20,7 +20,11 @@ public enum CSVKitError: Error {
  */
 public struct CSVParser: CSVKitDelegate {
     public static let shared: CSVParser = CSVParser()
-    public var separator = CSVKitDefaultSeparator
+    public var separator: String
+    
+    public init() {
+        separator = CSVKitDefaultSeparator
+    }
 
     /**
         Parse CSV data from given string
@@ -64,7 +68,11 @@ public struct CSVParser: CSVKitDelegate {
  */
 public struct CSVEncoder: CSVKitDelegate {
     public static let shared: CSVEncoder = CSVEncoder()
-    public var separator = CSVKitDefaultSeparator
+    public var separator: String
+    
+    public init() {
+        separator = CSVKitDefaultSeparator
+    }
 
     /**
         Encode CSV data from given array of strings
