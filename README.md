@@ -1,6 +1,7 @@
 # CSVKit
 
 [![Build Status](https://travis-ci.com/sanzaru/csvkit.svg?branch=main)](https://travis-ci.com/sanzaru/csvkit)
+[![Swift](https://github.com/sanzaru/csvkit/actions/workflows/swift.yml/badge.svg)](https://github.com/sanzaru/csvkit/actions/workflows/swift.yml)
 
 CSVKit is a very simple, fast and lightweight CSV parsing and encoding library for Swift programming.
 
